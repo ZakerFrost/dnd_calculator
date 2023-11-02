@@ -5,11 +5,9 @@
 def hit_chance(modifier, proficiency, additional_bonus, ac, advantage=0):
 	"""Calculate and return the hit chance based on various parameters."""
 	positive_mods = modifier + proficiency + additional_bonus
-	# if (minimum_roll := ac - positive_mods - 1) < 1:
-	# 	minimum_roll = 1
-	# elif (minimum_roll := ac - positive_mods - 1) > 19:
-	# 	minimum_roll = 19
+	# Nat 1s and Nat 20s need to be accounted for
 	minimum_roll = max(1, min(19, ac - positive_mods - 1))
+	# Calculate hit chance based on DnD 5E rules
 	percentage = (1 - (minimum_roll / 20)**(advantage + 1)) * 100
 	return percentage
 
@@ -70,6 +68,7 @@ def main():
 		# Get the user to input all of the necessary data depending on the requested calculus
 		if choice == '1':
 			try:
+				# Validate that the inputs are integers
 				modifier = int(input("Enter the modifier for the attack: "))
 				proficiency = int(input("Enter the proficiency bonus: "))
 				additional_bonus_str = input("Enter any additional bonus (like +1 to rolls on a weapon) or press Enter for none: ")
