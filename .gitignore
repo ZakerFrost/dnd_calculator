@@ -1,6 +1,4 @@
 
 *.pyc
-calculations/__pycache__/utils.cpython-311.pyc
-calculations/__pycache__/success_rate.cpython-311.pyc
-calculations/__pycache__/damage_per_round.cpython-311.pyc
-calculations/__pycache__/average_result.cpython-311.pyc
+calculations/__pycache__/*
+__pycache__/
