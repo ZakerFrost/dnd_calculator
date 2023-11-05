@@ -20,10 +20,9 @@ def main():
         if choice == '1':
             try:
                 # Validate that the inputs
-                modifier = int(input("Enter the modifier for the attack: "))
-                proficiency = int(input("Enter the proficiency bonus: "))
+                modifier = str(input("Enter the modifier for the attack: "))
+                proficiency = str(input("Enter the proficiency bonus: "))
                 additional_bonus = str(input("Enter any additional bonus (like +1 to rolls on a weapon or the Bardic Inspiration dice) or press Enter for none: "))
-                #additional_bonus = 0 if additional_bonus_str == "" else int(additional_bonus_str)
                 ac = int(input("Enter the Armor Class (AC): "))
                 if ac <= 0:
                     print("Armor Class cannot be negative or 0")
@@ -49,7 +48,7 @@ def main():
         elif choice == '4':
             try:
                 # Validate that the inputs
-                modifier = int(input("Enter the flat modifier of the skill including proficiency or expertise: "))
+                modifier = str(input("Enter the flat modifier of the skill including proficiency or expertise or press Enter for none: "))
                 additional_bonus = str(input("Enter any additional bonus (either flat modifiers or dice) or press Enter for none: "))
                 dc = int(input("Enter the Difficulty Class (DC): "))
                 if dc <= 0:
@@ -67,7 +66,7 @@ def main():
         elif choice == '5':
             try:
                 # Validate that the inputs
-                modifier = int(input("Enter the flat modifier to add to the Saving Throw: "))
+                modifier = str(input("Enter the flat modifier to add to the Saving Throw or press Enter for none: "))
                 additional_bonus = str(input("Enter any additional bonus (either flat modifiers or dice) or press Enter for none: "))
                 dc = int(input("Enter the Difficulty Class (DC): "))
                 if dc <= 0:

@@ -2,6 +2,8 @@ from calculations.average_result import calculate_average_result
 
 def calculate_success_rate(modifier, proficiency, additional_bonus, ac, advantage=0):
 	"""Calculate and return the hit chance based on various parameters."""
+	modifier = 0 if modifier == "" else int(modifier)
+	proficiency = 0 if proficiency == "" else int(proficiency)
 	bonus = 0 if additional_bonus == "" else calculate_average_result(additional_bonus)
 	positive_mods = modifier + proficiency + bonus
 	# Nat 1s and Nat 20s need to be accounted for
