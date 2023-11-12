@@ -11,3 +11,17 @@ def calculate_success_rate(modifier, proficiency, additional_bonus, ac, advantag
 	# Calculate hit chance based on DnD 5E rules
 	percentage = (1 - (minimum_roll / 20)**(advantage + 1)) * 100
 	return percentage
+
+# def probability_one_die_meets(dice, target):
+# 	num_dice, value_dice = map(int, dice.split('d'))
+# 	percentage = ((value_dice - target + 1) / value_dice)**(num_dice) * 100
+# 	return percentage
+
+def probability_repeated_success(dice, target):
+	num_dice, value_dice = map(int, dice.split('d'))
+	percentages = []
+	for i in range(1, num_dice + 1):
+		percentage = ((value_dice - target + 1) / value_dice)**(i) * 100
+		percentages.append(percentage)
+
+	return percentages
