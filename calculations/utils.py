@@ -31,13 +31,18 @@ def calculate_and_display_saving_throw(modifier, additional_bonus, dc):
                 f"\r\nNormal roll = {normal_percentage:.2f}% \tAdvantage roll = {advantage_percentage:.2f}%")
     return response
 
-# def calculate_and_display_probability_one_dice_meets(dice, target):
-#     """Calculate the probability of at least one of the dice succeeding in meeting
-#     the target result or surpasses it, and return the message to display to the user."""
-#     percentage = probability_one_die_meets(dice, target)
-#     response = (f"The probability that at least one of the dice succeeds "
-#                 f"in rolling the target number or above is: {percentage:.2f}%")
-#     return response
+def calculate_and_display_probability_one_dice_meets(dice, target):
+    """Calculate the probability of at least one of the dice succeeding in meeting
+    the target result or surpasses it, and return the message to display to the user."""
+    percentages = probability_one_die_meets(dice, target)
+    response_parts = []
+    for i, percentage in enumerate(percentages, start=1):
+        response_parts.append(f"{i}: {percentage:.2f}%")
+
+    response = "\r\n".join(response_parts)
+    num_dice, value_dice = dice.split('d')
+    response = f"Probabilities for up to {num_dice} amount of {value_dice} sided dice to succeed at least one with a minimum roll of {target} are:\r\n" + response
+    return response
 
 def calculate_and_display_probability_repeated_success(dice, target):
     """Calculate the probability of multiple dice meeting or surpassing the target result

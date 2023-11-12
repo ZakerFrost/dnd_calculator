@@ -13,6 +13,7 @@ def main():
         print("4: Skill Check")
         print("5: Saving Throw")
         print("6: Probability of multiple dice rolling equal or above")
+        print("7: Probability at least one success in multiple rolls")
         print("0: Exit")
 
         choice = input("Enter your choice: ")
@@ -104,27 +105,27 @@ def main():
             print(response)
             print("----------------------")
 
-        # elif choice == '7':
-        #     try:
-        #         # Validate the inputs
-        #         value_dice_input = input("Enter the size of the dice to roll (Default is a d20): ")
-        #         # Check if the input is empty or an integer
-        #         if value_dice_input.strip() == "":
-        #             value_dice = 20
-        #         else:
-        #             value_dice = int(value_dice_input)
+        elif choice == '7':
+            try:
+                # Validate the inputs
+                value_dice_input = input("Enter the size of the dice to roll (Default is a d20): ")
+                # Check if the input is empty or an integer
+                if value_dice_input.strip() == "":
+                    value_dice = 20
+                else:
+                    value_dice = int(value_dice_input)
                 
-        #         num_dice = int(input("Enter the amount of dice to roll: "))
-        #         target = int(input("Enter the target number to meet: "))
-        #     except ValueError:
-        #         print("Please enter valid values.")
-        #         continue
+                num_dice = int(input("Enter the amount of dice to roll: "))
+                target = int(input("Enter the target number to meet: "))
+            except ValueError:
+                print("Please enter valid values.")
+                continue
             
-        #     dice = str(num_dice) + 'd' + str(value_dice)
-        #     response = calculate_and_display_probability_one_dice_meets(dice, target)
-        #     print("----------------------")
-        #     print(response)
-        #     print("----------------------")
+            dice = str(num_dice) + 'd' + str(value_dice)
+            response = calculate_and_display_probability_one_dice_meets(dice, target)
+            print("----------------------")
+            print(response)
+            print("----------------------")
     
         elif choice == '0':
             print("Exiting. Have a nice day!")
