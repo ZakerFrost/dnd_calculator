@@ -45,7 +45,34 @@ def main():
             print("----------------------")
 
         elif choice == '3':
-            print(calculate_and_display_damage_per_round())
+            try:
+                # Get all necessary inputs
+                modifier = input("Enter the attack modifier: ")
+                proficiency = input("Enter the proficiency bonus: ")
+                additional_bonus = input("Enter any additional bonus to hit: ")
+                ac = int(input("Enter the target's Armor Class (AC): "))
+                damage_formula = input("Enter the damage formula (e.g., 2d6+4): ")
+                attacks_per_turn = int(input("Enter the number of attacks per turn: "))
+                advantage = input("Does the attack have advantage? (yes/no): ").strip().lower()
+                advantage = 1 if advantage in ["yes", "y"] else 0
+
+                # Inputs for bonus attacks
+                bonus_attacks = int(input("Enter the number of bonus attacks (e.g., off-hand attacks): "))
+                if bonus_attacks > 0:
+                    bonus_damage_formula = input("Enter the damage formula for bonus attacks (e.g., 1d6+1): ")
+                else:
+                    bonus_damage_formula = "0"
+            except ValueError:
+                print("Invalid input. Please ensure all numeric values are correct.")
+                continue
+
+            # Call the utility function and print the result
+            response = calculate_and_display_damage_per_round(
+                modifier, proficiency, additional_bonus, ac, damage_formula, attacks_per_turn, advantage, bonus_attacks, bonus_damage_formula
+            )
+            print("----------------------")
+            print(response)
+            print("----------------------")
 
         elif choice == '4':
             try:
