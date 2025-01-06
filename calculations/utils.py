@@ -57,20 +57,32 @@ def calculate_and_display_probability_repeated_success(dice, target):
     response = f"Probabilities for up to {num_dice} amount of {value_dice} sided dice to all meet a minimum roll of {target} are:\r\n" + response
     return response
 
-def calculate_and_display_damage_per_round(modifier, proficiency, additional_bonus, ac, damage_formula, attacks_per_turn, advantage, bonus_attacks, bonus_damage_formula):
+def calculate_and_display_damage_per_round(modifier, proficiency, additional_bonus, ac, damage_formula, attacks_per_turn, advantage, bonus_attacks_data):
     """Wrapper for damage_per_round that formats the result into a message."""
     try:
-        hit_chance, critical_chance, average_damage, average_critical_damage, bonus_attack_dpr, dpr = damage_per_round(
-            modifier, proficiency, additional_bonus, ac, damage_formula, attacks_per_turn, advantage, bonus_attacks, bonus_damage_formula
+        hit_chance, critical_chance, average_damage, average_critical_damage, bonus_attack_dpr_list, dpr = damage_per_round(
+            modifier, proficiency, additional_bonus, ac, damage_formula, attacks_per_turn, advantage, bonus_attacks_data
         )
     except Exception as e:
         return f"An error occurred during the calculation: {str(e)}"
 
+    # Build response
     response = (f"Hit Chance: {hit_chance:.2f}%\n"
                 f"Critical Chance: {critical_chance * 100:.2f}%\n"
                 f"Average Damage: {average_damage}\n"
                 f"Average Critical Damage: {average_critical_damage}\n"
                 f"Attacks Per Turn: {attacks_per_turn}\n"
-                f"Bonus Attack DPR: {bonus_attack_dpr:.2f}\n"
-                f"Total Damage Per Round (DPR): {dpr:.2f}")
+                f"Base Attack DPR: {dpr - sum(bonus_attack_dpr_list):.2f}\n")
+
+    # Add bonus attack details
+    for i, (bonus_attack, bonus_dpr) in enumerate(zip(bonus_attacks_data, bonus_attack_dpr_list), start=1):
+        response += (f"  Bonus Attack {i}:\n"
+                     f"    Damage Formula: {bonus_attack['damage_formula']}\n"
+                     f"    Hit Modifier: {bonus_attack['hit_modifier']}\n"
+                     f"    Advantage: {'Yes' if bonus_attack['advantage'] else 'No'}\n"
+                     f"    DPR: {bonus_dpr:.2f}\n")
+
+    # Total DPR
+    response += f"Total Damage Per Round (DPR): {dpr:.2f}"
+
     return response

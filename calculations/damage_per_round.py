@@ -26,7 +26,7 @@ def calculate_critical_damage(damage_formula):
         critical_damage += critical_average
     return critical_damage
 
-def damage_per_round(modifier, proficiency, additional_bonus, ac, damage_formula, attacks_per_turn, advantage, bonus_attacks, bonus_damage_formula):
+def damage_per_round(modifier, proficiency, additional_bonus, ac, damage_formula, attacks_per_turn, advantage, bonus_attacks_data):
     """Calculate the Damage Per Round (DPR) with critical hits included."""
     # Calculate hit chance
     hit_chance = calculate_success_rate(modifier, proficiency, additional_bonus, ac, advantage)
@@ -47,20 +47,26 @@ def damage_per_round(modifier, proficiency, additional_bonus, ac, damage_formula
     # Total damage for regular attacks
     regular_attack_dpr = attacks_per_turn * (normal_damage + critical_damage_contribution)
 
-     # Calculate bonus attack damage
-    if bonus_attacks > 0:
-        bonus_average_damage = calculate_average_result(bonus_damage_formula)
-        bonus_critical_damage = calculate_critical_damage(bonus_damage_formula)
+     # Calculate DPR for bonus attacks
+    bonus_attack_dpr_list = []
+    for bonus_attack in bonus_attacks_data:
+        bonus_formula = bonus_attack["damage_formula"]
+        bonus_modifier = int(bonus_attack["hit_modifier"])
+        bonus_advantage = bonus_attack["advantage"]
 
-        bonus_normal_damage = (hit_chance - (critical_chance * 100)) / 100 * bonus_average_damage
+        # Calculate hit chance for this bonus attack
+        bonus_hit_chance = calculate_success_rate(bonus_modifier, 0, "", ac, bonus_advantage)
+        bonus_average_damage = calculate_average_result(bonus_formula)
+        bonus_critical_damage = calculate_critical_damage(bonus_formula)
+
+        # Calculate DPR for this bonus attack
+        bonus_normal_damage = (bonus_hit_chance - (critical_chance * 100)) / 100 * bonus_average_damage
         bonus_critical_damage_contribution = critical_chance * bonus_critical_damage
+        bonus_attack_dpr = bonus_normal_damage + bonus_critical_damage_contribution
 
-        # Total damage for bonus attacks
-        bonus_attack_dpr = bonus_attacks * (bonus_normal_damage + bonus_critical_damage_contribution)
-    else:
-        bonus_attack_dpr = 0
+        bonus_attack_dpr_list.append(bonus_attack_dpr)
 
     # Combine regular and bonus attack DPR
-    dpr = regular_attack_dpr + bonus_attack_dpr
+    dpr = regular_attack_dpr + sum(bonus_attack_dpr_list)
 
-    return hit_chance, critical_chance, average_damage, average_critical_damage, bonus_attack_dpr, dpr
+    return hit_chance, critical_chance, average_damage, average_critical_damage, bonus_attack_dpr_list, dpr
