@@ -9,7 +9,7 @@ def main():
         print("Choose a calculation:")
         print("1: Hit Chance")
         print("2: Average Damage")
-        print("3: Damage Per Round [Not implemented]")
+        print("3: Damage Per Round")
         print("4: Skill Check")
         print("5: Saving Throw")
         print("6: Probability of multiple dice rolling equal or above")
@@ -57,18 +57,27 @@ def main():
                 advantage = 1 if advantage in ["yes", "y"] else 0
 
                 # Inputs for bonus attacks
-                bonus_attacks = int(input("Enter the number of bonus attacks (e.g., off-hand attacks): "))
-                if bonus_attacks > 0:
-                    bonus_damage_formula = input("Enter the damage formula for bonus attacks (e.g., 1d6+1): ")
-                else:
-                    bonus_damage_formula = "0"
+                bonus_attacks = int(input("Enter the number of bonus attacks (e.g., off-hand attacks or extraordinary actions): "))
+                bonus_attacks_data = []
+
+                for i in range(bonus_attacks):
+                    print(f"Enter details for bonus attack {i + 1}:")
+                    bonus_damage_formula = input(f"  Damage formula for bonus attack {i + 1} (e.g., 1d6+1): ")
+                    bonus_hit_modifier = input(f"  Hit modifier for bonus attack {i + 1} (if different, or press Enter for none): ")
+                    bonus_advantage = input(f"  Does bonus attack {i + 1} have advantage? (yes/no): ").strip().lower()
+                    bonus_advantage = 1 if bonus_advantage in ["yes", "y"] else 0
+                    bonus_attacks_data.append({
+                        "damage_formula": bonus_damage_formula,
+                        "hit_modifier": bonus_hit_modifier.strip() or "0",
+                        "advantage": bonus_advantage
+                    })
             except ValueError:
                 print("Invalid input. Please ensure all numeric values are correct.")
                 continue
 
             # Call the utility function and print the result
             response = calculate_and_display_damage_per_round(
-                modifier, proficiency, additional_bonus, ac, damage_formula, attacks_per_turn, advantage, bonus_attacks, bonus_damage_formula
+                modifier, proficiency, additional_bonus, ac, damage_formula, attacks_per_turn, advantage, bonus_attacks_data
             )
             print("----------------------")
             print(response)
@@ -159,7 +168,7 @@ def main():
             break
 
         else:
-            print("Invalid choice. Enter a number from [1-6] or 0 to exit.")
+            print("Invalid choice. Enter a number from [1-7] or 0 to exit.")
             continue
 
 if __name__ == "__main__":
