@@ -57,5 +57,20 @@ def calculate_and_display_probability_repeated_success(dice, target):
     response = f"Probabilities for up to {num_dice} amount of {value_dice} sided dice to all meet a minimum roll of {target} are:\r\n" + response
     return response
 
-def calculate_and_display_damage_per_round():
-    return damage_per_round()
+def calculate_and_display_damage_per_round(modifier, proficiency, additional_bonus, ac, damage_formula, attacks_per_turn, advantage, bonus_attacks, bonus_damage_formula):
+    """Wrapper for damage_per_round that formats the result into a message."""
+    try:
+        hit_chance, critical_chance, average_damage, average_critical_damage, bonus_attack_dpr, dpr = damage_per_round(
+            modifier, proficiency, additional_bonus, ac, damage_formula, attacks_per_turn, advantage, bonus_attacks, bonus_damage_formula
+        )
+    except Exception as e:
+        return f"An error occurred during the calculation: {str(e)}"
+
+    response = (f"Hit Chance: {hit_chance:.2f}%\n"
+                f"Critical Chance: {critical_chance * 100:.2f}%\n"
+                f"Average Damage: {average_damage}\n"
+                f"Average Critical Damage: {average_critical_damage}\n"
+                f"Attacks Per Turn: {attacks_per_turn}\n"
+                f"Bonus Attack DPR: {bonus_attack_dpr:.2f}\n"
+                f"Total Damage Per Round (DPR): {dpr:.2f}")
+    return response
